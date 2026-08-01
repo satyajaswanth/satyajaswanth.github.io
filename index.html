@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Satya Jaswanth Badri | Computer Architecture &amp; Embedded AI</title>
+<meta name="description" content="Satya Jaswanth Badri — Assistant Professor in Computer Science. Research in computer architecture, non-volatile memory, intermittent computing, and embedded AI for battery-less edge devices." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --bg:#0A0D12;
+    --bg-2:#0E121A;
+    --surface:#12171F;
+    --surface-2:#161C26;
+    --line:#212836;
+    --line-soft:#1a202b;
+    --text:#E7EBF2;
+    --muted:#8A94A6;
+    --muted-2:#616B7C;
+    --amber:#F2A93B;
+    --amber-dim:#c98a2c;
+    --live:#4FD6A8;
+    --radius:10px;
+    --maxw:1080px;
+    --display:'Space Grotesk',system-ui,sans-serif;
+    --body:'IBM Plex Sans',system-ui,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--body);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--amber);color:#0A0D12}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+
+  .mono{font-family:var(--mono)}
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--amber);
+  }
+
+  /* ---------- NAV ---------- */
+  header.nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(10,13,18,.82);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .nav-inner{
+    max-width:var(--maxw);margin:0 auto;padding:14px 28px;
+    display:flex;align-items:center;justify-content:space-between;gap:20px;
+  }
+  .brand{font-family:var(--mono);font-size:14px;letter-spacing:.04em;color:var(--text);display:flex;align-items:center;gap:9px}
+  .brand .dot{width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 4px rgba(242,169,59,.14);animation:blink 2.6s steps(1) infinite}
+  @keyframes blink{0%,72%{opacity:1}73%,100%{opacity:.28}}
+  .brand b{color:var(--muted)}
+  nav.links{display:flex;gap:26px}
+  nav.links a{font-family:var(--mono);font-size:13px;color:var(--muted);letter-spacing:.02em;padding:4px 0;position:relative}
+  nav.links a:hover{color:var(--text)}
+  nav.links a::after{content:"";position:absolute;left:0;bottom:-2px;height:1px;width:0;background:var(--amber);transition:width .25s ease}
+  nav.links a:hover::after{width:100%}
+  .menu-btn{display:none;background:none;border:1px solid var(--line);color:var(--text);font-family:var(--mono);font-size:18px;border-radius:8px;padding:4px 11px;cursor:pointer}
+
+  /* ---------- HERO ---------- */
+  .hero{border-bottom:1px solid var(--line-soft);position:relative;overflow:hidden}
+  .hero .wrap{padding-top:78px;padding-bottom:70px;display:grid;grid-template-columns:1.05fr .95fr;gap:54px;align-items:center}
+  .status-pill{
+    display:inline-flex;align-items:center;gap:9px;
+    font-family:var(--mono);font-size:12px;color:var(--muted);
+    border:1px solid var(--line);border-radius:100px;padding:6px 13px;margin-bottom:26px;
+  }
+  .status-pill .live{width:7px;height:7px;border-radius:50%;background:var(--live);box-shadow:0 0 8px var(--live)}
+  .hero h1{
+    font-family:var(--display);font-weight:700;
+    font-size:clamp(2.5rem,6vw,4.15rem);line-height:1.02;letter-spacing:-.02em;
+    margin:16px 0 20px;
+  }
+  .hero h1 .accent{color:var(--amber)}
+  .hero .role{font-size:1.06rem;color:var(--muted);max-width:34ch;margin-bottom:26px}
+  .hero .role b{color:var(--text);font-weight:600}
+  .tagset{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:30px}
+  .tag{font-family:var(--mono);font-size:11.5px;letter-spacing:.02em;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:5px 10px}
+  .cta-row{display:flex;flex-wrap:wrap;gap:12px}
+  .btn{
+    font-family:var(--mono);font-size:13px;letter-spacing:.01em;
+    padding:11px 18px;border-radius:8px;border:1px solid var(--line);
+    color:var(--text);display:inline-flex;align-items:center;gap:8px;transition:.2s;
+  }
+  .btn:hover{border-color:var(--amber);color:var(--amber);transform:translateY(-1px)}
+  .btn.primary{background:var(--amber);color:#0A0D12;border-color:var(--amber);font-weight:500}
+  .btn.primary:hover{background:#ffbb52;color:#0A0D12;transform:translateY(-1px)}
+
+  /* ---------- POWER TRACE (signature) ---------- */
+  .scope{
+    background:var(--bg-2);
+    border:1px solid var(--line);border-radius:12px;padding:16px 16px 12px;
+    box-shadow:inset 0 0 60px rgba(242,169,59,.03);
+  }
+  .scope-head{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:11px;color:var(--muted-2);letter-spacing:.05em;margin-bottom:8px;text-transform:uppercase}
+  .scope-head .ch{color:var(--amber)}
+  .scope svg{display:block;width:100%;height:auto}
+  .grid-l{stroke:var(--line-soft);stroke-width:1}
+  .thresh{stroke:var(--live);stroke-width:1.2;stroke-dasharray:4 5;opacity:.65}
+  .trace{fill:none;stroke:var(--amber);stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round;filter:drop-shadow(0 0 5px rgba(242,169,59,.35))}
+  .dot{fill:#fff;filter:drop-shadow(0 0 6px var(--amber))}
+  .lbl{font-family:var(--mono);font-size:11px;fill:var(--muted)}
+  .lbl.g{fill:var(--live)}
+  .lbl.a{fill:var(--amber)}
+  .scope-foot{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;color:var(--muted-2);margin-top:8px;letter-spacing:.03em}
+
+  /* ---------- STATS ---------- */
+  .stats{border-bottom:1px solid var(--line-soft);background:var(--bg-2)}
+  .stats .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+  .stat{padding:26px 8px;border-right:1px solid var(--line-soft)}
+  .stat:last-child{border-right:none}
+  .stat .num{font-family:var(--display);font-weight:600;font-size:2rem;color:var(--text);line-height:1}
+  .stat .num small{color:var(--amber);font-size:1.1rem}
+  .stat .cap{font-family:var(--mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:9px}
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:76px 0}
+  .sec-head{margin-bottom:38px}
+  .sec-head .kicker{font-family:var(--mono);font-size:12px;color:var(--amber);letter-spacing:.14em;text-transform:uppercase}
+  .sec-head h2{font-family:var(--display);font-weight:600;font-size:clamp(1.7rem,3.4vw,2.4rem);letter-spacing:-.01em;margin-top:12px}
+  .sec-head .num{font-family:var(--mono);color:var(--muted-2);font-size:12px;float:right;margin-top:6px}
+
+  /* ABOUT */
+  .about-grid{display:grid;grid-template-columns:1.55fr 1fr;gap:48px;align-items:start}
+  .about p{color:#cfd6e0;margin-bottom:18px;max-width:60ch}
+  .about p b{color:var(--text);font-weight:600}
+  .news{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:22px}
+  .news h3{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:16px}
+  .news li{list-style:none;display:grid;grid-template-columns:auto 1fr;gap:12px;padding:11px 0;border-top:1px solid var(--line-soft);font-size:13.5px;color:#cbd2dd}
+  .news li:first-of-type{border-top:none}
+  .news li .yr{font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap;padding-top:2px}
+
+  /* RESEARCH */
+  .rgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .rcard{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:24px;transition:.2s;position:relative;overflow:hidden}
+  .rcard:hover{border-color:var(--amber);transform:translateY(-2px)}
+  .rcard::before{content:attr(data-idx);position:absolute;top:14px;right:16px;font-family:var(--mono);font-size:11px;color:var(--muted-2)}
+  .rcard h3{font-family:var(--display);font-weight:600;font-size:1.12rem;margin-bottom:9px;padding-right:30px}
+  .rcard p{font-size:13.5px;color:var(--muted);line-height:1.55}
+  .rcard .chips{margin-top:14px;display:flex;flex-wrap:wrap;gap:6px}
+  .rcard .chips span{font-family:var(--mono);font-size:10.5px;color:var(--amber);border:1px solid rgba(242,169,59,.28);border-radius:5px;padding:3px 8px}
+
+  /* PUBLICATIONS */
+  .pubfilter{display:flex;gap:8px;margin-bottom:26px;flex-wrap:wrap}
+  .pubfilter button{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:7px;padding:7px 15px;cursor:pointer;transition:.18s}
+  .pubfilter button:hover{color:var(--text);border-color:var(--muted)}
+  .pubfilter button.active{background:var(--amber);color:#0A0D12;border-color:var(--amber);font-weight:500}
+  .pub{
+    display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:baseline;
+    padding:20px 4px;border-top:1px solid var(--line-soft);transition:.18s;
+  }
+  .pub:hover{background:var(--surface);border-radius:8px;padding-left:14px;padding-right:14px}
+  .pub .idx{font-family:var(--mono);font-size:12px;color:var(--muted-2)}
+  .pub .body h4{font-family:var(--display);font-weight:500;font-size:1.02rem;line-height:1.35;margin-bottom:7px}
+  .pub .body .authors{font-size:13px;color:var(--muted)}
+  .pub .body .authors .me{color:var(--text);font-weight:600;border-bottom:1px solid var(--amber)}
+  .pub .meta{text-align:right;white-space:nowrap}
+  .pub .venue{font-family:var(--mono);font-size:11.5px;color:var(--amber);display:block}
+  .pub .yr{font-family:var(--mono);font-size:11px;color:var(--muted-2)}
+  .pub .type-badge{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:2px 7px;display:inline-block;margin-top:8px}
+
+  /* TIMELINE */
+  .tl-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+  .tl h3{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:24px}
+  .tl-item{position:relative;padding:0 0 26px 26px;border-left:1px solid var(--line)}
+  .tl-item:last-child{padding-bottom:0}
+  .tl-item::before{content:"";position:absolute;left:-5px;top:4px;width:9px;height:9px;border-radius:50%;background:var(--bg);border:2px solid var(--amber)}
+  .tl-item .t{font-family:var(--display);font-weight:600;font-size:1.02rem}
+  .tl-item .o{font-size:13.5px;color:#cbd2dd;margin-top:2px}
+  .tl-item .d{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:5px;letter-spacing:.03em}
+
+  /* SERVICE */
+  .svc-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:40px;margin-top:8px}
+  .svc-box{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:24px}
+  .svc-box h3{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:16px}
+  .svc-box .row{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-top:1px solid var(--line-soft);font-size:13.5px;color:#cbd2dd}
+  .svc-box .row:first-of-type{border-top:none}
+  .svc-box .row .code{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+  .svc-tags{display:flex;flex-wrap:wrap;gap:8px}
+  .svc-tags span{font-family:var(--mono);font-size:12px;color:#cbd2dd;border:1px solid var(--line);border-radius:6px;padding:7px 12px}
+
+  /* CONTACT */
+  .contact{border-top:1px solid var(--line-soft)}
+  .console{background:#0B0F16;border:1px solid var(--line);border-radius:12px;overflow:hidden;max-width:640px}
+  .console-bar{display:flex;align-items:center;gap:7px;padding:11px 15px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+  .console-bar .c{width:11px;height:11px;border-radius:50%}
+  .console-bar .c.r{background:#e06666}.console-bar .c.y{background:var(--amber)}.console-bar .c.g{background:var(--live)}
+  .console-bar .ttl{font-family:var(--mono);font-size:11px;color:var(--muted-2);margin-left:8px}
+  .console-body{padding:22px;font-family:var(--mono);font-size:13.5px;line-height:2}
+  .console-body .p{color:var(--live)}
+  .console-body .cmd{color:var(--text)}
+  .console-body .out{color:var(--amber);padding-left:2px}
+  .console-body a.out:hover{text-decoration:underline}
+  .console-body .cursor{display:inline-block;width:8px;height:15px;background:var(--amber);vertical-align:-2px;animation:cur 1.1s steps(1) infinite}
+  @keyframes cur{50%{opacity:0}}
+  .contact-side{margin-top:8px}
+  .contact-side .lead{color:#cfd6e0;max-width:44ch;margin-bottom:22px}
+  .social{display:flex;flex-wrap:wrap;gap:10px}
+
+  /* FOOTER */
+  footer.site{border-top:1px solid var(--line-soft);padding:34px 0;background:var(--bg-2)}
+  .foot-inner{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+  .foot-inner .fb{font-family:var(--display);font-weight:600;font-size:1.05rem}
+  .foot-inner .fb span{color:var(--amber)}
+  .foot-inner .fm{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+
+  /* RESPONSIVE */
+  @media(max-width:860px){
+    .hero .wrap{grid-template-columns:1fr;gap:38px;padding-top:52px;padding-bottom:52px}
+    .scope{order:2}
+    .about-grid,.rgrid,.tl-grid,.svc-grid{grid-template-columns:1fr;gap:28px}
+    .stats .wrap{grid-template-columns:repeat(2,1fr)}
+    .stat:nth-child(2){border-right:none}
+    .stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--line-soft)}
+    nav.links{
+      display:none;position:absolute;top:100%;left:0;right:0;
+      flex-direction:column;gap:0;background:var(--bg-2);border-bottom:1px solid var(--line);padding:8px 28px 16px;
+    }
+    nav.links.open{display:flex}
+    nav.links a{padding:12px 0;border-top:1px solid var(--line-soft)}
+    .menu-btn{display:block}
+    .pub{grid-template-columns:auto 1fr;gap:12px}
+    .pub .meta{grid-column:2;text-align:left;margin-top:2px}
+  }
+  @media(max-width:460px){
+    .stats .wrap{grid-template-columns:1fr}
+    .stat{border-right:none;border-bottom:1px solid var(--line-soft)}
+    .cta-row .btn{flex:1;justify-content:center}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;scroll-behavior:auto!important}
+    #scanDot{display:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="brand"><span class="dot"></span>satya<b>.badri</b></a>
+    <nav class="links" id="navlinks">
+      <a href="#about">About</a>
+      <a href="#research">Research</a>
+      <a href="#publications">Publications</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">≡</button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-text">
+      <span class="status-pill"><span class="live"></span>Assistant Professor · Computer Science · Dubai</span>
+      <div class="eyebrow">Computer Architecture · Embedded AI · Intermittent Computing</div>
+      <h1>Satya Jaswanth <span class="accent">Badri</span></h1>
+      <p class="role">I design <b>memory-aware architectures</b> and <b>energy-efficient inference</b> for battery-less, intermittently-powered edge devices — where computation must survive power failure.</p>
+      <div class="tagset">
+        <span class="tag">Non-Volatile Memory</span>
+        <span class="tag">STT-RAM / FRAM</span>
+        <span class="tag">TinyML</span>
+        <span class="tag">Energy Harvesting</span>
+        <span class="tag">HW/SW Co-Design</span>
+      </div>
+      <div class="cta-row">
+        <a class="btn primary" href="#publications">View Publications</a>
+        <a class="btn" href="https://scholar.google.com/citations?user=V_uI7goAAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar ↗</a>
+        <a class="btn" href="https://www.linkedin.com/in/satya-jaswanth-badri-29b520100/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      </div>
+    </div>
+
+    <!-- SIGNATURE: intermittent-computing power trace -->
+    <div class="scope" aria-hidden="true">
+      <div class="scope-head"><span>V<sub>cap</sub> · harvested energy</span><span class="ch">CH1 · live</span></div>
+      <svg viewBox="0 0 600 240" role="img">
+        <!-- grid -->
+        <g>
+          <line class="grid-l" x1="0" y1="60" x2="600" y2="60"/>
+          <line class="grid-l" x1="0" y1="120" x2="600" y2="120"/>
+          <line class="grid-l" x1="0" y1="180" x2="600" y2="180"/>
+          <line class="grid-l" x1="120" y1="0" x2="120" y2="240"/>
+          <line class="grid-l" x1="240" y1="0" x2="240" y2="240"/>
+          <line class="grid-l" x1="360" y1="0" x2="360" y2="240"/>
+          <line class="grid-l" x1="480" y1="0" x2="480" y2="240"/>
+        </g>
+        <!-- compute threshold -->
+        <line class="thresh" x1="0" y1="82" x2="600" y2="82"/>
+        <text class="lbl g" x="6" y="76">V_compute</text>
+
+        <!-- the trace: charge → power-fail. cycle 2 dies before threshold -->
+        <path id="powerPath" class="trace"
+          d="M 8 200
+             C 40 200, 70 120, 110 70
+             C 122 58, 130 55, 138 55
+             L 138 200
+             C 168 200, 195 150, 232 118
+             C 240 111, 246 110, 250 110
+             L 250 200
+             C 292 200, 320 110, 372 62
+             C 384 51, 392 50, 398 50
+             L 398 200
+             C 440 200, 470 130, 512 78
+             C 522 66, 530 64, 536 64
+             L 536 200
+             L 596 200"/>
+
+        <!-- markers -->
+        <circle cx="97" cy="82" r="3.5" fill="#4FD6A8"/>
+        <text class="lbl a" x="150" y="150">✕ power-fail</text>
+        <text class="lbl" x="196" y="106">dies&lt;V_c</text>
+
+        <!-- travelling scan dot -->
+        <circle id="scanDot" class="dot" r="4.5" cx="8" cy="200">
+          <animateMotion dur="6s" repeatCount="indefinite" rotate="0" keyPoints="0;1" keyTimes="0;1" calcMode="linear">
+            <mpath href="#powerPath"/>
+          </animateMotion>
+        </circle>
+      </svg>
+      <div class="scope-foot"><span>MSP430 · FRAM checkpoint</span><span>t → resume after failure</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="wrap">
+    <div class="stat"><div class="num">72<small>+</small></div><div class="cap">Citations</div></div>
+    <div class="stat"><div class="num">9</div><div class="cap">Publications</div></div>
+    <div class="stat"><div class="num">PhD</div><div class="cap">IIT Ropar</div></div>
+    <div class="stat"><div class="num">imec</div><div class="cap">Postdoc · Leuven</div></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head"><span class="num">// 01</span><div class="kicker">About</div><h2>Computing at the edge of power</h2></div>
+    <div class="about-grid">
+      <div class="about">
+        <p>I am an <b>Assistant Professor in Computer Science</b>, working on computer architecture, embedded AI, and hardware–software co-design for ultra-constrained edge devices. My research asks a hard question: how do you run useful computation — including deep-learning inference — on devices that have <b>no battery</b> and lose power without warning?</p>
+        <p>I completed my <b>PhD at the Indian Institute of Technology Ropar</b> (2018–2023) under the guidance of Dr. Neeraj Goel and Dr. Mukesh Saini, with a thesis on the <b>design of non-volatile processors for intermittent computing</b>. I then joined <b>imec</b> in Leuven, Belgium as a Postdoctoral Researcher, continuing work on memory-aware inference for energy-harvesting systems.</p>
+        <p>My work spans the memory hierarchy — from STT-RAM hybrid caches to FRAM-based main memory — and the microcontrollers that sit at the heart of battery-less platforms. The through-line is <b>intermittency-robust design</b>: keeping state safe across power failures while staying within a tiny energy budget.</p>
+      </div>
+      <aside class="news">
+        <h3>Recent News</h3>
+        <ul>
+          <li><span class="yr">2024→</span><span>Joined as Assistant Professor in Computer Science; building a research group on efficient edge AI.</span></li>
+          <li><span class="yr">2024</span><span>Postdoctoral Researcher at imec, Leuven — memory-aware inference for intermittent systems.</span></li>
+          <li><span class="yr">Oct '23</span><span>Successfully defended PhD thesis: “Design of Non-Volatile Processors for Intermittent Computing.”</span></li>
+          <li><span class="yr">Oct '23</span><span>“Mapi-Pro” accepted in ACM Transactions on Architecture and Code Optimization (TACO).</span></li>
+          <li><span class="yr">Apr '23</span><span>Presented PhD Forum poster at DATE 2023 on non-volatile processors.</span></li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<section id="research" style="background:var(--bg-2);border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft)">
+  <div class="wrap">
+    <div class="sec-head"><span class="num">// 02</span><div class="kicker">Research Interests</div><h2>Where memory meets energy</h2></div>
+    <div class="rgrid">
+      <div class="rcard" data-idx="A">
+        <h3>Intermittent Computing</h3>
+        <p>Keeping programs correct across frequent, unpredictable power failures on energy-harvesting devices — checkpointing, safe resumption, and forward progress under tight energy budgets.</p>
+        <div class="chips"><span>power-failure resilience</span><span>checkpointing</span></div>
+      </div>
+      <div class="rcard" data-idx="B">
+        <h3>Non-Volatile Memory</h3>
+        <p>Architecting with PCM-RAM, STT-RAM, and FRAM: placement and migration policies for hybrid caches, and NVM-based main memory that retains state through power loss.</p>
+        <div class="chips"><span>STT-RAM</span><span>FRAM</span><span>PCM-RAM</span></div>
+      </div>
+      <div class="rcard" data-idx="C">
+        <h3>Non-Volatile Processors</h3>
+        <p>Designing and validating processors on real platforms (MSP430FR6989, MSP430F5529) that save and restore machine state efficiently for battery-less operation.</p>
+        <div class="chips"><span>MSP430</span><span>energy harvesting</span></div>
+      </div>
+      <div class="rcard" data-idx="D">
+        <h3>Embedded AI &amp; TinyML</h3>
+        <p>Memory-aware scheduling of CNN inference and intermittency-robust deep learning for microcontroller-class hardware — bringing inference to devices that run on harvested power.</p>
+        <div class="chips"><span>on-device inference</span><span>HW/SW co-design</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+  <div class="wrap">
+    <div class="sec-head"><span class="num">// 03</span><div class="kicker">Publications</div><h2>Selected papers</h2></div>
+    <div class="pubfilter" id="pubfilter">
+      <button class="active" data-f="all">All</button>
+      <button data-f="journal">Journal</button>
+      <button data-f="conference">Conference</button>
+    </div>
+    <div id="publist">
+
+      <div class="pub" data-type="journal">
+        <span class="idx">J4</span>
+        <div class="body">
+          <h4>Mapi-Pro: An Energy Efficient Memory Mapping Technique for Intermittent Computing</h4>
+          <div class="authors"><span class="me">S. J. Badri</span>, M. Saini, N. Goel</div>
+          <span class="type-badge">Journal</span>
+        </div>
+        <div class="meta"><span class="venue">ACM TACO 20(4)</span><span class="yr">2023</span></div>
+      </div>
+
+      <div class="pub" data-type="journal">
+        <span class="idx">J3</span>
+        <div class="body">
+          <h4>An Efficient NVM-Based Architecture for Intermittent Computing Under Energy Constraints</h4>
+          <div class="authors"><span class="me">S. J. Badri</span>, M. Saini, N. Goel</div>
+          <span class="type-badge">Journal</span>
+        </div>
+        <div class="meta"><span class="venue">IEEE TVLSI 31(6)</span><span class="yr">2023</span></div>
+      </div>
+
+      <div class="pub" data-type="journal">
+        <span class="idx">J2</span>
+        <div class="body">
+          <h4>Efficient Placement and Migration Policies for an STT-RAM Based Hybrid L1 Cache for Intermittently Powered Systems</h4>
+          <div class="authors"><span class="me">S. J. Badri</span>, M. Saini, N. Goel</div>
+          <span class="type-badge">Journal</span>
+        </div>
+        <div class="meta"><span class="venue">Des. Autom. Embed. Syst. 27(4)</span><span class="yr">2023</span></div>
+      </div>
+
+      <div class="pub" data-type="journal">
+        <span class="idx">J1</span>
+        <div class="body">
+          <h4>A Novel Map-Scan-Reduce Based Density Peaks Clustering and Privacy Protection Approach for Large Datasets</h4>
+          <div class="authors"><span class="me">S. J. Badri</span></div>
+          <span class="type-badge">Journal</span>
+        </div>
+        <div class="meta"><span class="venue">Int. J. of Computers &amp; Applications</span><span class="yr">2019</span></div>
+      </div>
+
+      <div class="pub" data-type="conference">
+        <span class="idx">C5</span>
+        <div class="body">
+          <h4>Strengthening the Return Address Stack of the Rocket Core Against Buffer Overflow Attacks</h4>
+          <div class="authors">L. Sharma, <span class="me">S. J. Badri</span>, N. Goel</div>
+          <span class="type-badge">Conference</span>
+        </div>
+        <div class="meta"><span class="venue">SecITC</span><span class="yr">2024</span></div>
+      </div>
+
+      <div class="pub" data-type="conference">
+        <span class="idx">C4</span>
+        <div class="body">
+          <h4>Note: A Novel Virtual Guidance Based Emergency Treatment Using a Low-Cost Drone Network</h4>
+          <div class="authors"><span class="me">S. J. Badri</span>, V. S. R. Timmareddy, V. B. R. Chintakunta, S. R. Kamini</div>
+          <span class="type-badge">Conference</span>
+        </div>
+        <div class="meta"><span class="venue">ACM W. Autonomous &amp; Intelligent Mobile Sys.</span><span class="yr">2020</span></div>
+      </div>
+
+      <div class="pub" data-type="conference">
+        <span class="idx">C3</span>
+        <div class="body">
+          <h4>A Novel Forest Fire Detection System Using Fuzzy Entropy Optimized Thresholding and STN-Based CNN</h4>
+          <div class="authors">S. B. Avula, <span class="me">S. J. Badri</span>, G. Reddy</div>
+          <span class="type-badge">Conference</span>
+        </div>
+        <div class="meta"><span class="venue">IEEE COMSNETS</span><span class="yr">2020</span></div>
+      </div>
+
+      <div class="pub" data-type="conference">
+        <span class="idx">C2</span>
+        <div class="body">
+          <h4>A Novel Frame Model for Cluster Head Selection and Codeword Detection in 5G Cellular Networks</h4>
+          <div class="authors">V. S. R. Timmareddy, <span class="me">S. J. Badri</span>, V. B. R. Chintakunta, R. Mohta, K. Vattikunta</div>
+          <span class="type-badge">Conference</span>
+        </div>
+        <div class="meta"><span class="venue">IEEE ANTS</span><span class="yr">2020</span></div>
+      </div>
+
+      <div class="pub" data-type="conference">
+        <span class="idx">C1</span>
+        <div class="body">
+          <h4>Audio and Video Transmission Using Visible Light Communication</h4>
+          <div class="authors"><span class="me">S. J. Badri</span>, S. H. Badri</div>
+          <span class="type-badge">Conference</span>
+        </div>
+        <div class="meta"><span class="venue">IEEE ANTS</span><span class="yr">2019</span></div>
+      </div>
+
+    </div>
+    <p class="mono" style="color:var(--muted-2);font-size:12px;margin-top:22px">Full list &amp; citation metrics on <a href="https://scholar.google.com/citations?user=V_uI7goAAAAJ&hl=en" target="_blank" rel="noopener" style="color:var(--amber);border-bottom:1px solid var(--amber)">Google Scholar ↗</a></p>
+  </div>
+</section>
+
+<!-- EXPERIENCE & EDUCATION -->
+<section id="experience" style="background:var(--bg-2);border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft)">
+  <div class="wrap">
+    <div class="sec-head"><span class="num">// 04</span><div class="kicker">Experience &amp; Education</div><h2>The path here</h2></div>
+    <div class="tl-grid">
+      <div class="tl">
+        <h3>Experience</h3>
+        <div class="tl-item">
+          <div class="t">Assistant Professor</div>
+          <div class="o">Department of Computer Science</div>
+          <div class="d">2024 — Present · Dubai</div>
+        </div>
+        <div class="tl-item">
+          <div class="t">Postdoctoral Researcher</div>
+          <div class="o">imec — Interuniversity Microelectronics Centre</div>
+          <div class="d">Leuven, Belgium</div>
+        </div>
+        <div class="tl-item">
+          <div class="t">Research Scholar</div>
+          <div class="o">Computer Science &amp; Engineering, IIT Ropar</div>
+          <div class="d">2018 — 2023</div>
+        </div>
+        <div class="tl-item">
+          <div class="t">Software Engineer</div>
+          <div class="o">Global Edge Software Ltd.</div>
+          <div class="d">May 2017 — Jun 2018</div>
+        </div>
+      </div>
+      <div class="tl">
+        <h3>Education</h3>
+        <div class="tl-item">
+          <div class="t">Ph.D., Computer Science &amp; Engineering</div>
+          <div class="o">Indian Institute of Technology Ropar</div>
+          <div class="d">2018 — 2023 · Advisors: Dr. N. Goel &amp; Dr. M. Saini</div>
+        </div>
+        <div class="tl-item">
+          <div class="t">B.Tech., Computer Science &amp; Engineering</div>
+          <div class="o">Sree Vidyanikethan Eng. College (now Mohan Babu University), Tirupati</div>
+          <div class="d">2017</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc-grid">
+      <div class="svc-box">
+        <h3>Teaching Assistant · IIT Ropar</h3>
+        <div class="row"><span>Digital Logic Design</span><span class="code">CS203 · 5 terms</span></div>
+        <div class="row"><span>Computer Architecture</span><span class="code">CS204 · 3 terms</span></div>
+        <div class="row"><span>Low Power Design</span><span class="code">CS527</span></div>
+        <div class="row"><span>AI CPS for Agriculture</span><span class="code">CS546</span></div>
+        <div class="row"><span>Digital Logic Design (NPTEL)</span><span class="code">3 terms</span></div>
+      </div>
+      <div class="svc-box">
+        <h3>Reviewer</h3>
+        <div class="svc-tags">
+          <span>VLSID 2024</span>
+          <span>ACM Compute 2023</span>
+          <span>IAPR-CVIP 2021</span>
+          <span>VDAT 2019</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact">
+  <div class="wrap">
+    <div class="sec-head"><span class="num">// 05</span><div class="kicker">Contact</div><h2>Let's build something efficient</h2></div>
+    <div class="about-grid">
+      <div class="console">
+        <div class="console-bar"><span class="c r"></span><span class="c y"></span><span class="c g"></span><span class="ttl">satya@edge — serial console</span></div>
+        <div class="console-body">
+          <div><span class="p">$</span> <span class="cmd">whoami</span></div>
+          <div class="out">satya_jaswanth_badri</div>
+          <div><span class="p">$</span> <span class="cmd">role</span></div>
+          <div class="out">assistant_professor · computer_architecture</div>
+          <div><span class="p">$</span> <span class="cmd">focus</span></div>
+          <div class="out">non_volatile_memory · intermittent_computing · embedded_AI</div>
+          <div><span class="p">$</span> <span class="cmd">status</span></div>
+          <div class="out">open_to_collaboration = true</div>
+          <div><span class="p">$</span> <span class="cmd">reach</span></div>
+          <div><a class="out" href="mailto:satyajaswanth.badri@gmail.com">satyajaswanth.badri@gmail.com</a></div>
+          <div><span class="p">$</span> <span class="cursor"></span></div>
+        </div>
+      </div>
+      <div class="contact-side">
+        <p class="lead">Interested in intermittent computing, non-volatile memory, or on-device AI? I'm always glad to talk research, collaboration, and student opportunities.</p>
+        <div class="social">
+          <a class="btn" href="mailto:satyajaswanth.badri@gmail.com">Email</a>
+          <a class="btn" href="https://scholar.google.com/citations?user=V_uI7goAAAAJ&hl=en" target="_blank" rel="noopener">Scholar ↗</a>
+          <a class="btn" href="https://www.linkedin.com/in/satya-jaswanth-badri-29b520100/" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a class="btn" href="https://github.com/satyajaswanth" target="_blank" rel="noopener">GitHub ↗</a>
+          <a class="btn" href="https://www.researchgate.net/profile/Satyajaswanth_Badri" target="_blank" rel="noopener">ResearchGate ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site">
+  <div class="wrap foot-inner">
+    <div>
+      <div class="fb">satya jaswanth <span>badri</span></div>
+      <div class="fm">Architect for the edge of power · © <span id="yr"></span></div>
+    </div>
+    <div class="fm">Non-Volatile Memory · Intermittent Computing · Embedded AI</div>
+  </div>
+</footer>
+
+<script>
+  // year
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // mobile menu
+  var mb = document.getElementById('menuBtn'), nl = document.getElementById('navlinks');
+  mb.addEventListener('click', function(){ nl.classList.toggle('open'); });
+  nl.addEventListener('click', function(e){ if(e.target.tagName==='A') nl.classList.remove('open'); });
+
+  // publication filter
+  var pf = document.getElementById('pubfilter');
+  pf.addEventListener('click', function(e){
+    if(e.target.tagName!=='BUTTON') return;
+    var f = e.target.getAttribute('data-f');
+    pf.querySelectorAll('button').forEach(function(b){ b.classList.toggle('active', b===e.target); });
+    document.querySelectorAll('#publist .pub').forEach(function(p){
+      p.style.display = (f==='all' || p.getAttribute('data-type')===f) ? '' : 'none';
+    });
+  });
+</script>
+</body>
+</html>
