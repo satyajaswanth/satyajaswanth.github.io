@@ -30,8 +30,8 @@
     --shadow-lift:0 10px 30px rgba(0,0,0,.45);
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
+  html{scroll-behavior:smooth;font-size:17px}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:1rem;line-height:1.65;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
   a{color:var(--accent);text-decoration:none}
   a:hover{color:var(--accent-2)}
   ::selection{background:var(--accent);color:#fff}
@@ -68,8 +68,8 @@
   .socials a{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-family:var(--mono);color:var(--muted);border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 12px;transition:.2s}
   .socials a:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
   .socials svg{width:15px;height:15px}
-  .avatar{width:220px;height:220px;border-radius:18px;overflow:hidden;position:relative;border:1px solid var(--line);box-shadow:var(--shadow-lift);background:linear-gradient(140deg,var(--accent),#0C2450)}
-  .avatar img{width:100%;height:100%;object-fit:cover;display:block;position:relative;z-index:2}
+  .avatar{width:220px;height:220px;border-radius:50%;overflow:hidden;position:relative;border:3px solid var(--surface);box-shadow:var(--shadow-lift),0 0 0 1px var(--line);background:linear-gradient(140deg,var(--accent),#0C2450)}
+  .avatar img{width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block;position:relative;z-index:2}
   .avatar .initials{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:700;font-size:3.4rem;color:#fff;z-index:1}
 
   /* METRICS STRIP (animated) */
@@ -151,6 +151,36 @@
   .pe-sym{font-family:var(--mono);font-size:11px;fill:var(--muted-2)}
   .act-dot{fill:var(--accent)}.wt-dot{fill:var(--accent-2)}
   .sys-wrap{border:1px solid var(--line);border-radius:12px;background:var(--surface-2);padding:20px 16px;max-width:360px;margin:0 auto}
+  .dual-anim{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .fsm-node{fill:var(--surface);stroke:var(--line);stroke-width:1.6}
+  .fsm-lbl{font-family:var(--mono);font-size:13px;fill:var(--text)}
+  .fsm-sub{font-family:var(--mono);font-size:9px;fill:var(--muted)}
+  .fsm-t{font-family:var(--mono);font-size:10px}
+  .fsm-t.acc{fill:var(--accent)}.fsm-t.mut{fill:var(--muted)}
+  .fsm-side{font-family:var(--mono);font-size:9px;fill:var(--muted-2);letter-spacing:.08em;text-transform:uppercase}
+  .fsm-div{stroke:var(--line);stroke-width:1;stroke-dasharray:4 5}
+  .fsm-arc-t{fill:none;stroke:var(--accent);stroke-width:1.6}
+  .fsm-arc-n{fill:none;stroke:var(--muted);stroke-width:1.6}
+  .mk-a{fill:var(--accent)}.mk-n{fill:var(--muted)}
+  .fsm-tok{fill:none;stroke:var(--accent);stroke-width:3;filter:drop-shadow(0 0 6px var(--accent))}
+  /* intermittent-computing phase cycle */
+  .ic-anim{padding:8px 2px 2px}
+  .ic-track{display:flex;gap:5px;align-items:stretch}
+  .ic-ph{flex-grow:1;flex-basis:0;min-height:58px;display:flex;align-items:center;justify-content:center;text-align:center;font-family:var(--mono);font-size:11.5px;color:#22304d;border-radius:7px;border:1px solid rgba(20,40,80,.14);line-height:1.15;padding:2px;animation:phasestep 7.2s ease-in-out infinite}
+  .ic-ph.restore{background:#DAD3F0}
+  .ic-ph.exec{background:#CDE9D3;flex-grow:1.3}
+  .ic-ph.backup{background:#F7E4C6;flex-grow:.85}
+  .ic-ph.off{background:#F5CFD0;flex-grow:1.7}
+  @keyframes phasestep{0%,100%{transform:none;box-shadow:none;filter:none}5%{transform:translateY(-3px);box-shadow:0 5px 16px rgba(23,58,122,.32);filter:brightness(1.05)}17%{transform:none;box-shadow:none}}
+  .ic-cycles{display:flex;margin-top:9px}
+  .ic-cycles span{flex:1;text-align:center;font-family:var(--mono);font-size:11px;color:var(--muted);border-top:1px solid var(--line);padding-top:6px;position:relative;margin:0 2px}
+  .ic-cycles span::before,.ic-cycles span::after{content:"";position:absolute;top:0;width:1px;height:6px;background:var(--line)}
+  .ic-cycles span::before{left:0}.ic-cycles span::after{right:0}
+  /* tinyML neural net */
+  .nn-edge{stroke:var(--line);stroke-width:1;opacity:.55}
+  .nn-node{fill:var(--surface);stroke:var(--accent);stroke-width:1.6;animation:nnpulse 3.2s ease-in-out infinite}
+  @keyframes nnpulse{0%,100%{fill:var(--surface)}10%{fill:var(--accent)}32%{fill:var(--surface)}}
+  .nn-dot{fill:var(--accent-2);filter:drop-shadow(0 0 4px var(--accent-2))}
 
   /* research cards */
   .rgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
@@ -227,7 +257,7 @@
   .foot-inner{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:.82rem;color:var(--muted);font-family:var(--mono)}
 
   @media(max-width:800px){
-    .hero-grid,.tl-grid,.two-col,.anim-grid,.rgrid,.stu-list{grid-template-columns:1fr;gap:24px}
+    .hero-grid,.tl-grid,.two-col,.anim-grid,.rgrid,.stu-list,.dual-anim{grid-template-columns:1fr;gap:24px}
     .avatar{width:150px;height:150px;order:-1}
     .metrics-grid{grid-template-columns:repeat(2,1fr)}
     .metric:nth-child(2){border-right:none}
@@ -243,7 +273,7 @@
   @media(max-width:520px){.metrics-grid{grid-template-columns:1fr}.news li{grid-template-columns:70px 1fr;gap:10px}}
   @media(prefers-reduced-motion:reduce){
     *{transition:none!important;animation:none!important}
-    #scanDot,#memDot,.chk-dot,#failFlash,.act-dot,.wt-dot,#clkRun{display:none}
+    #scanDot,#memDot,.chk-dot,#failFlash,.act-dot,.wt-dot,#clkRun,.fsm-tok,.nn-dot{display:none}
     .cell,.pe{fill:var(--accent-soft)}
     .metric{opacity:1;transform:none}
   }
@@ -333,15 +363,21 @@
     <div class="sub-title">Intermittent computing, <span>in motion.</span></div>
     <div class="anim-grid">
       <figure class="fig" aria-hidden="true">
-        <div class="fig-head"><span>V<sub>cap</sub> · harvested energy</span><span class="ch">CH1 · live</span></div>
-        <svg viewBox="0 0 600 240" role="img">
-          <g><line class="grid-l" x1="0" y1="60" x2="600" y2="60"/><line class="grid-l" x1="0" y1="120" x2="600" y2="120"/><line class="grid-l" x1="0" y1="180" x2="600" y2="180"/><line class="grid-l" x1="120" y1="0" x2="120" y2="240"/><line class="grid-l" x1="240" y1="0" x2="240" y2="240"/><line class="grid-l" x1="360" y1="0" x2="360" y2="240"/><line class="grid-l" x1="480" y1="0" x2="480" y2="240"/></g>
-          <line class="thresh" x1="0" y1="82" x2="600" y2="82"/><text class="lbl g" x="6" y="76">V_compute</text>
-          <path id="powerPath" class="trace" d="M 8 200 C 40 200, 70 120, 110 70 C 122 58, 130 55, 138 55 L 138 200 C 168 200, 195 150, 232 118 C 240 111, 246 110, 250 110 L 250 200 C 292 200, 320 110, 372 62 C 384 51, 392 50, 398 50 L 398 200 C 440 200, 470 130, 512 78 C 522 66, 530 64, 536 64 L 536 200 L 596 200"/>
-          <text class="lbl a" x="150" y="150">✕ power-fail</text><text class="lbl" x="196" y="106">dies&lt;V_c</text>
-          <circle id="scanDot" class="dot" r="4.5" cx="8" cy="200"><animateMotion dur="6s" repeatCount="indefinite" keyPoints="0;1" keyTimes="0;1" calcMode="linear"><mpath href="#powerPath"/></animateMotion></circle>
-        </svg>
-        <div class="fig-foot"><span>MSP430 · FRAM checkpoint</span><span>t → resume after failure</span></div>
+        <div class="fig-head"><span>Compute / power cycle</span><span class="ch">restore → run → backup → off</span></div>
+        <div class="ic-anim">
+          <div class="ic-track">
+            <div class="ic-ph restore" style="animation-delay:0.00s">Restore</div>
+            <div class="ic-ph exec" style="animation-delay:0.90s">Executing</div>
+            <div class="ic-ph backup" style="animation-delay:1.80s">Backup</div>
+            <div class="ic-ph off" style="animation-delay:2.70s">Power&nbsp;Off</div>
+            <div class="ic-ph restore" style="animation-delay:3.60s">Restore</div>
+            <div class="ic-ph exec" style="animation-delay:4.50s">Executing</div>
+            <div class="ic-ph backup" style="animation-delay:5.40s">Backup</div>
+            <div class="ic-ph off" style="animation-delay:6.30s">Power&nbsp;Off</div>
+          </div>
+          <div class="ic-cycles"><span>D<sub>i</sub></span><span>D<sub>i+1</sub></span></div>
+        </div>
+        <div class="fig-foot"><span>power fails during “off” — state is restored next cycle</span></div>
       </figure>
       <figure class="fig" aria-hidden="true">
         <div class="fig-head"><span>Memory hierarchy</span><span class="ch">● power-fail</span></div>
@@ -364,9 +400,11 @@
     <div class="anim-cap">IF · fetch → ID · decode → EX · execute → MEM · memory → WB · write-back</div>
 
     <!-- systolic MAC array (new animation) -->
-    <div class="anim-lead" style="margin-top:34px"><h3>Systolic <span>MAC array.</span></h3><p>Activations stream in from the left, weights from the top; each cell multiply-accumulates on the wavefront — the heart of on-device inference.</p></div>
-    <div class="sys-wrap" aria-hidden="true">
-      <svg viewBox="0 0 300 268" role="img">
+    <div class="anim-lead" style="margin-top:34px"><h3>Inside the <span>edge accelerator.</span></h3><p>A dataflow MAC array beside a quantized neural network — the two halves of on-device TinyML.</p></div>
+    <div class="dual-anim" aria-hidden="true">
+      <figure class="fig">
+        <div class="fig-head"><span>Systolic MAC array</span><span class="ch">act · weights</span></div>
+        <svg viewBox="0 0 300 268" role="img">
         <text class="msub" x="70" y="16">weights ↓</text>
         <text class="msub" x="6" y="70">act →</text>
         <!-- PEs 4x4 -->
@@ -394,6 +432,11 @@
         <circle class="wt-dot" r="3.5" cx="248"><animate attributeName="cy" values="26;252" dur="4s" begin="1.5s" repeatCount="indefinite"/></circle>
         <text class="msub chk-lbl" x="150" y="264" text-anchor="middle">Σ partial sums</text>
       </svg>
+      </figure>
+      <figure class="fig">
+        <div class="fig-head"><span>TinyML inference</span><span class="ch">quantized NN</span></div>
+        <svg id="nnsvg" viewBox="0 0 300 268" role="img"></svg>
+      </figure>
     </div>
 
     <!-- research interest cards -->
@@ -582,6 +625,24 @@
       for(var col=0;col<9;col++){var s=col-r;if(s>=0&&s<5){html+='<div class="cell" style="grid-column:'+(col+2)+';grid-row:'+(r+2)+';animation-delay:'+((r+s)*0.16).toFixed(2)+'s">'+stages[s]+'</div>';}}
     }
     pipe.innerHTML=html;
+  })();
+
+  // tinyML neural net builder
+  (function(){
+    var svg=document.getElementById('nnsvg'); if(!svg)return;
+    var xs=[46,118,190,258];
+    var layers=[[70,116,162,208],[70,116,162,208],[70,116,162,208],[108,178]];
+    var s='';
+    for(var l=0;l<layers.length-1;l++)for(var i=0;i<layers[l].length;i++)for(var j=0;j<layers[l+1].length;j++){
+      s+='<line class="nn-edge" x1="'+xs[l]+'" y1="'+layers[l][i]+'" x2="'+xs[l+1]+'" y2="'+layers[l+1][j]+'"/>';
+    }
+    var ys=[70,116,162,208];
+    for(var k=0;k<4;k++){s+='<circle class="nn-dot" r="3" cy="'+ys[k]+'"><animate attributeName="cx" values="46;258" dur="2.8s" begin="'+(k*0.35).toFixed(2)+'s" repeatCount="indefinite"/></circle>';}
+    for(var a=0;a<layers.length;a++)for(var b=0;b<layers[a].length;b++){
+      s+='<circle class="nn-node" cx="'+xs[a]+'" cy="'+layers[a][b]+'" r="10" style="animation-delay:'+(a*0.7).toFixed(2)+'s"/>';
+    }
+    s+='<text class="fsm-side" x="46" y="42" text-anchor="middle">in</text><text class="fsm-side" x="258" y="42" text-anchor="middle">out</text><text class="fsm-side" x="150" y="250" text-anchor="middle">quantized INT8 · on-device</text>';
+    svg.innerHTML=s;
   })();
 
   // animated metrics: count-up + reveal on scroll
