@@ -181,6 +181,21 @@
   .nn-node{fill:var(--surface);stroke:var(--accent);stroke-width:1.6;animation:nnpulse 3.2s ease-in-out infinite}
   @keyframes nnpulse{0%,100%{fill:var(--surface)}10%{fill:var(--accent)}32%{fill:var(--surface)}}
   .nn-dot{fill:var(--accent-2);filter:drop-shadow(0 0 4px var(--accent-2))}
+  /* intermittent-computing energy + phase figure */
+  .anim-grid{align-items:start}
+  .ic2-ph{stroke:rgba(20,40,80,.16);stroke-width:1.4;animation:ic2pulse 9s ease-in-out infinite}
+  @keyframes ic2pulse{0%,100%{filter:none;stroke:rgba(20,40,80,.16)}6%{filter:drop-shadow(0 0 7px var(--accent));stroke:var(--accent)}18%{filter:none;stroke:rgba(20,40,80,.16)}}
+  .ic2-lbl{font-family:var(--mono);font-size:12px;fill:#22304d}
+  .ic2-cap{font-family:var(--mono);font-size:10px;fill:var(--muted)}
+  .ic2-side{font-family:var(--mono);font-size:10px;fill:var(--muted-2);letter-spacing:.05em}
+  .ic2-curve{fill:none;stroke:var(--text);stroke-width:2;stroke-linejoin:round}
+  .ic2-thr{stroke:var(--accent-2);stroke-width:1;stroke-dasharray:4 5;opacity:.7}
+  .ic2-head{fill:var(--accent);opacity:.26}
+  .ic2-dot{fill:var(--accent);filter:drop-shadow(0 0 5px var(--accent))}
+  .ic2-bracket{stroke:var(--line);stroke-width:1;fill:none}
+  .ic2-cyc{font-family:var(--mono);font-size:12px;fill:var(--text)}
+  .ic2-fail{fill:#d9534f}.ic2-rest{fill:#2f9e5f}
+  .ic2-mk{font-family:var(--mono);font-size:9px}
 
   /* research cards */
   .rgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
@@ -273,7 +288,7 @@
   @media(max-width:520px){.metrics-grid{grid-template-columns:1fr}.news li{grid-template-columns:70px 1fr;gap:10px}}
   @media(prefers-reduced-motion:reduce){
     *{transition:none!important;animation:none!important}
-    #scanDot,#memDot,.chk-dot,#failFlash,.act-dot,.wt-dot,#clkRun,.fsm-tok,.nn-dot{display:none}
+    #scanDot,#memDot,.chk-dot,#failFlash,.act-dot,.wt-dot,#clkRun,.fsm-tok,.nn-dot,.ic2-head,.ic2-dot{display:none}
     .cell,.pe{fill:var(--accent-soft)}
     .metric{opacity:1;transform:none}
   }
@@ -364,19 +379,7 @@
     <div class="anim-grid">
       <figure class="fig" aria-hidden="true">
         <div class="fig-head"><span>Compute / power cycle</span><span class="ch">restore → run → backup → off</span></div>
-        <div class="ic-anim">
-          <div class="ic-track">
-            <div class="ic-ph restore" style="animation-delay:0.00s">Restore</div>
-            <div class="ic-ph exec" style="animation-delay:0.90s">Executing</div>
-            <div class="ic-ph backup" style="animation-delay:1.80s">Backup</div>
-            <div class="ic-ph off" style="animation-delay:2.70s">Power&nbsp;Off</div>
-            <div class="ic-ph restore" style="animation-delay:3.60s">Restore</div>
-            <div class="ic-ph exec" style="animation-delay:4.50s">Executing</div>
-            <div class="ic-ph backup" style="animation-delay:5.40s">Backup</div>
-            <div class="ic-ph off" style="animation-delay:6.30s">Power&nbsp;Off</div>
-          </div>
-          <div class="ic-cycles"><span>D<sub>i</sub></span><span>D<sub>i+1</sub></span></div>
-        </div>
+        <svg id="ic2svg" viewBox="0 0 520 372" role="img"></svg>
         <div class="fig-foot"><span>power fails during “off” — state is restored next cycle</span></div>
       </figure>
       <figure class="fig" aria-hidden="true">
@@ -642,6 +645,64 @@
       s+='<circle class="nn-node" cx="'+xs[a]+'" cy="'+layers[a][b]+'" r="10" style="animation-delay:'+(a*0.7).toFixed(2)+'s"/>';
     }
     s+='<text class="fsm-side" x="46" y="42" text-anchor="middle">in</text><text class="fsm-side" x="258" y="42" text-anchor="middle">out</text><text class="fsm-side" x="150" y="250" text-anchor="middle">quantized INT8 · on-device</text>';
+    svg.innerHTML=s;
+  })();
+
+  // intermittent-computing energy + phase builder
+  (function(){
+    var svg=document.getElementById('ic2svg'); if(!svg)return;
+    var DUR=9, x0=34, x1=496, top=196, ph=84, gap=5, thr=112, loY=142;
+    var defs=[['Restore',0.9,'#DAD3F0'],['Executing',1.25,'#CDE9D3'],['Backup',0.8,'#F7E4C6'],['Power Off',1.7,'#F5CFD0']];
+    var names=[],wts=[],cols=[];
+    for(var c=0;c<2;c++)for(var q=0;q<4;q++){names.push(defs[q][0]);wts.push(defs[q][1]);cols.push(defs[q][2]);}
+    var tot=0;for(var i=0;i<wts.length;i++)tot+=wts[i];
+    var content=(x1-x0)-gap*(wts.length-1), x=x0, bx=[], bw=[];
+    for(var i=0;i<wts.length;i++){var w=content*wts[i]/tot;bx.push(x);bw.push(w);x+=w+gap;}
+    function f(n){return (+n).toFixed(1);}
+    // energy curve points
+    var pts=[[x0,128]];
+    for(var i=0;i<names.length;i++){
+      var l=bx[i], r=bx[i]+bw[i], m=l+bw[i]/2, t=i%4;
+      if(t===0) pts.push([r,72]);
+      else if(t===1){ pts.push([m,52]); pts.push([r,60]); }
+      else if(t===2) pts.push([r,92]);
+      else { pts.push([l+7,loY]); pts.push([r,loY]); }
+    }
+    pts.push([x1,loY]);
+    var d='M '+f(pts[0][0])+' '+f(pts[0][1]);
+    for(var i=1;i<pts.length;i++) d+=' L '+f(pts[i][0])+' '+f(pts[i][1]);
+    var s='';
+    s+='<text class="ic2-side" x="'+x0+'" y="28">Energy source</text>';
+    s+='<line class="ic2-thr" x1="'+x0+'" y1="'+thr+'" x2="'+x1+'" y2="'+thr+'"/>';
+    s+='<text class="ic2-side" x="'+x1+'" y="'+(thr-4)+'" text-anchor="end">V_compute</text>';
+    s+='<path class="ic2-curve" d="'+d+'"/>';
+    // fail markers (start of each Power Off)
+    [3,7].forEach(function(i){var fx=bx[i]+2; s+='<path class="ic2-fail" d="M'+fx+' 150 l-4 -8 h8 z"/>';});
+    s+='<text class="ic2-mk ic2-fail" x="'+(bx[3]+2)+'" y="167" text-anchor="middle">power fail</text>';
+    // restore marker (start of second cycle)
+    var rmx=bx[4]+bw[4]/2;
+    s+='<path class="ic2-rest" d="M'+f(rmx)+' 100 l-4 8 h8 z"/>';
+    s+='<text class="ic2-mk ic2-rest" x="'+f(rmx)+'" y="94" text-anchor="middle">power restore</text>';
+    // phase blocks
+    for(var i=0;i<names.length;i++){
+      s+='<rect class="ic2-ph" x="'+f(bx[i])+'" y="'+top+'" width="'+f(bw[i])+'" height="'+ph+'" rx="8" style="fill:'+cols[i]+';animation-delay:'+(i*(DUR/8)).toFixed(2)+'s"/>';
+      s+='<text class="ic2-lbl" x="'+f(bx[i]+bw[i]/2)+'" y="'+(top+ph/2+4)+'" text-anchor="middle">'+names[i]+'</text>';
+    }
+    // cycle brackets
+    var by=top+ph+16;
+    function bracket(xa,xb,label){var mid=(xa+xb)/2;
+      s+='<path class="ic2-bracket" d="M'+f(xa)+' '+by+' v6 M'+f(xa)+' '+(by+6)+' H'+f(xb)+' M'+f(xb)+' '+by+' v6"/>';
+      s+='<text class="ic2-cyc" x="'+f(mid)+'" y="'+(by+24)+'" text-anchor="middle">'+label+'</text>';}
+    bracket(bx[0], bx[3]+bw[3], 'D<tspan dy="4" font-size="9">i</tspan>');
+    bracket(bx[4], bx[7]+bw[7], 'D<tspan dy="4" font-size="9">i+1</tspan>');
+    // legend
+    var ly=by+52, lstep=(x1-x0)/4;
+    for(var i=0;i<4;i++){var cx=x0+i*lstep;
+      s+='<rect x="'+f(cx)+'" y="'+(ly-10)+'" width="12" height="12" rx="3" style="fill:'+defs[i][2]+'" stroke="rgba(20,40,80,.16)"/>';
+      s+='<text class="ic2-cap" x="'+f(cx+17)+'" y="'+ly+'">'+defs[i][0]+'</text>';}
+    // playhead + energy dot
+    s+='<rect class="ic2-head" x="'+x0+'" y="20" width="2" height="'+(top+ph-14)+'"><animate attributeName="x" values="'+x0+';'+x1+'" dur="'+DUR+'s" repeatCount="indefinite"/></rect>';
+    s+='<circle class="ic2-dot" r="4"><animateMotion dur="'+DUR+'s" repeatCount="indefinite" path="'+d+'"/></circle>';
     svg.innerHTML=s;
   })();
 
