@@ -185,7 +185,7 @@
   .anim-grid{align-items:start}
   .ic2-ph{stroke:rgba(20,40,80,.16);stroke-width:1.4;animation:ic2pulse 9s ease-in-out infinite}
   @keyframes ic2pulse{0%,100%{filter:none;stroke:rgba(20,40,80,.16)}6%{filter:drop-shadow(0 0 7px var(--accent));stroke:var(--accent)}18%{filter:none;stroke:rgba(20,40,80,.16)}}
-  .ic2-lbl{font-family:var(--mono);font-size:12px;fill:#22304d}
+  .ic2-lbl{font-family:var(--mono);font-size:10px;fill:#22304d}
   .ic2-cap{font-family:var(--mono);font-size:10px;fill:var(--muted)}
   .ic2-side{font-family:var(--mono);font-size:10px;fill:var(--muted-2);letter-spacing:.05em}
   .ic2-curve{fill:none;stroke:var(--text);stroke-width:2;stroke-linejoin:round}
@@ -651,8 +651,8 @@
   // intermittent-computing energy + phase builder
   (function(){
     var svg=document.getElementById('ic2svg'); if(!svg)return;
-    var DUR=9, x0=34, x1=496, top=196, ph=84, gap=5, thr=112, loY=142;
-    var defs=[['Restore',0.9,'#DAD3F0'],['Executing',1.25,'#CDE9D3'],['Backup',0.8,'#F7E4C6'],['Power Off',1.7,'#F5CFD0']];
+    var DUR=9, x0=26, x1=500, top=196, ph=84, gap=4, thr=112, loY=142;
+    var defs=[['Restore',0.95,'#DAD3F0'],['Executing',1.35,'#CDE9D3'],['Backup',0.82,'#F7E4C6'],['Power Off',1.4,'#F5CFD0']];
     var names=[],wts=[],cols=[];
     for(var c=0;c<2;c++)for(var q=0;q<4;q++){names.push(defs[q][0]);wts.push(defs[q][1]);cols.push(defs[q][2]);}
     var tot=0;for(var i=0;i<wts.length;i++)tot+=wts[i];
@@ -686,7 +686,8 @@
     // phase blocks
     for(var i=0;i<names.length;i++){
       s+='<rect class="ic2-ph" x="'+f(bx[i])+'" y="'+top+'" width="'+f(bw[i])+'" height="'+ph+'" rx="8" style="fill:'+cols[i]+';animation-delay:'+(i*(DUR/8)).toFixed(2)+'s"/>';
-      s+='<text class="ic2-lbl" x="'+f(bx[i]+bw[i]/2)+'" y="'+(top+ph/2+4)+'" text-anchor="middle">'+names[i]+'</text>';
+      var tl=Math.max(14, bw[i]-10);
+      s+='<text class="ic2-lbl" x="'+f(bx[i]+bw[i]/2)+'" y="'+(top+ph/2+4)+'" text-anchor="middle" textLength="'+f(tl)+'" lengthAdjust="spacingAndGlyphs">'+names[i]+'</text>';
     }
     // cycle brackets
     var by=top+ph+16;
